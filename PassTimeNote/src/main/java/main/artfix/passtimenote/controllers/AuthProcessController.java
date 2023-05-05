@@ -20,16 +20,16 @@ public class AuthProcessController {
     public String regProcessPage(@RequestParam("REGFormName") String RegName,
                                  @RequestParam("REGFormMail") String RegMail,
                                  @RequestParam("REGFormPassword") String RegPassword, Model model) {
-        registrationService.registration(RegName, RegMail, RegPassword);
-        model.addAttribute("RegPageMessage", registrationService.regMessage);
+        String registrationMessage = registrationService.registration(RegName, RegMail, RegPassword);
+        model.addAttribute("RegPageMessage", registrationMessage);
         return "reg";
     }
 
     @RequestMapping("/login")
     public String loginProcessPage(@RequestParam("LOGINFormMail") String LoginMail,
                                    @RequestParam("LOGINFormPassword") String LoginPassword, Model model) {
-        loginService.login(LoginMail, LoginPassword);
-        model.addAttribute("LoginPageMessage", loginService.loginMessage);
+        String loginMessage = loginService.login(LoginMail, LoginPassword);
+        model.addAttribute("LoginPageMessage", loginMessage);
         return "log";
     }
 

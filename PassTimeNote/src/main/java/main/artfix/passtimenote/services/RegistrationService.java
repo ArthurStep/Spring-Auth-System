@@ -1,8 +1,8 @@
 package main.artfix.passtimenote.services;
 
 import lombok.RequiredArgsConstructor;
-import main.artfix.passtimenote.models.Notes;
-import main.artfix.passtimenote.repos.NoteRepo;
+import main.artfix.passtimenote.models.Users;
+import main.artfix.passtimenote.repos.UsersRepo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,34 +11,26 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
 
     private final RandomCodeService randomCodeService;
-    private final NoteRepo noteRepo;
+    private final UsersRepo noteRepo;
     private final AppMailSender appMailSender;
     private final AESService aesService;
 
-    public String regMessage = "";
 
     @Value("${app.site.address}")
     private String SiteAddress;
 
-    public void registration(String RegName, String RegMail, String RegPassword) {
+    public String registration(String RegName, String RegMail, String RegPassword) {
+        String result;
         try {
-            Notes loginProcess = noteRepo.findByMail(RegMail);
+            Users loginProcess = noteRepo.findByMail(RegMail);
             loginProcess.getMail();
-            regMessage = "User Already Registred!";
+            result = "User Already Registred!";
         } catch (Exception e) {
-            System.out.println(" ");
-            System.out.println("### NEW USER REGISTRED ###");
-            System.out.println("Name: " + RegName);
-            System.out.println("Mail: " + RegMail);
-            System.out.println("Password: " + RegPassword);
-            System.out.println("### NEW USER REGISTRED END ###");
-            System.out.println(" ");
-
             String UserCode = randomCodeService.getRandom();
 
             String RegPasswordEncrypted = aesService.encrypt(RegPassword);
 
-            Notes notesDbSetLogin = new Notes();
+            Users notesDbSetLogin = new Users();
             notesDbSetLogin.setName(RegName);
             notesDbSetLogin.setMail(RegMail);
             notesDbSetLogin.setPassword(RegPasswordEncrypted);
@@ -50,7 +42,8 @@ public class RegistrationService {
                     "Hi, Dear " + RegName + "."
                             + "Thank you for registering on PassTimeNote. Please verify your account by clicking the following link:\n"
                             + verificationLink);
-            regMessage = "Success Registred!";
+            result = "Success Registred!";
         }
+        return result;
     }
 }
