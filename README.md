@@ -7,5 +7,3 @@ Spring Framework Login and Registration System with Account Verify.
 * Open source
 
 Project by Arthur Stepanyan: https://github.com/ArthurStep.
-
-Support project: https://ko-fi.com/arthurstep.
